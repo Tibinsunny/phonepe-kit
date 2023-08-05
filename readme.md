@@ -1,27 +1,27 @@
 # PhonePe SDK - Easy PhonePe Payments Gateway Integration for Node.js
 
-[![npm version](https://badge.fury.io/js/phonepe-sdk.svg)](https://badge.fury.io/js/phonepe-sdk)
+[![npm version](https://badge.fury.io/js/phonepe-kit.svg)](https://badge.fury.io/js/phonepe-kit)
 
 ## Overview
 
-`phonepe-sdk` is an easy-to-use npm package that simplifies the integration of the PhonePe Payments Gateway into your Node.js applications. With this package, you can quickly set up payment processing and generate PAY_PAGE links for seamless payment experiences.
+`phonepe-kit` is an easy-to-use npm package that simplifies the integration of the PhonePe Payments Gateway into your Node.js applications. With this package, you can quickly set up payment processing and generate PAY_PAGE links for seamless payment experiences.
 
 ## Installation
 
 You can install the package using npm:
 
 ```bash
-npm install phonepe-sdk
+npm install phonepe-kit
 ```
 
 ## Usage
 
 To get started with the PhonePe Payments Gateway integration, follow these steps:
 
-1. Import the phonepe-sdk package into your Node.js application:
+1. Import the phonepe-kitpackage into your Node.js application:
 
 ```javascript
-const PhonePe = require("phonepe-sdk");
+const PhonePe = require("phonepe-kit");
 ```
 
 2. Create an instance of the PhonePe class by providing your merchant key, merchant ID, callback URL, and secret key:
@@ -57,7 +57,7 @@ initilizePhonePe.generate(generate_data).then((data) => {
 ## Sample Code
 
 ```javascript
-const PhonePe = require("phonepe-sdk");
+const PhonePe = require("phonepe-kit");
 
 const initilizePhonePe = new PhonePe(
   "PGTESTPAYUAT80",

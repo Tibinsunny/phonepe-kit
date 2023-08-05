@@ -1,5 +1,5 @@
 {
-  "name": "phonepe-sdk",
+  "name": "phonepe-kit",
   "version": "1.0.0",
   "description": "SDK for Phonepe web checkout ",
   "main": "index.js",
@@ -7,9 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "phonepe",
+    "phonepe-kit",
     "sdk",
-    "phonepe-sdk"
+    "phonepe-sdk",
+    "phonepe"
   ],
   "author": "tibinsunny",
   "license": "ISC",
