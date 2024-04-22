@@ -13,10 +13,10 @@ const key_gen = require("./lib/keygen");
  */
 class PhonePe {
   constructor(PHONEPE_MERCHANT_ID, PHONEPE_MERCHANT_USER_ID, PHONEPE_CALLBACK_URL, PHONEPE_KEY) {
-    this.merchant_id = PHONEPE_MERCHANT_ID;
-    this.merchant_user_id = PHONEPE_MERCHANT_USER_ID;
-    this.phonepe_callback_url = PHONEPE_CALLBACK_URL;
-    this.phonepe_key = PHONEPE_KEY;
+    this.merchantId = PHONEPE_MERCHANT_ID;
+    this.merchantUserId = PHONEPE_MERCHANT_USER_ID;
+    this.phonepeCallbackUrl = PHONEPE_CALLBACK_URL;
+    this.phonepeKey = PHONEPE_KEY;
   }
 
   /**
@@ -28,19 +28,19 @@ class PhonePe {
    * @returns {Promise<string>} The generated or existing transaction ID.
    */
 
-  async createTxn(tnxId) {
+  async createTxn() {
     this.tnxId = await key_gen();
     return this.tnxId;
   }
   base64gen(payload) {
-    let b64 = Buffer.from(JSON.stringify(payload)).toString("base64");
-    return b64;
+    let base64 = Buffer.from(JSON.stringify(payload)).toString("base64");
+    return base64;
   }
-  sha256gen(b64) {
-    let preformatter = b64 + "/pg/v1/pay" + this.phonepe_key;
-    let sha256_data = sha256(preformatter);
-    sha256_data = sha256_data + "###" + 1;
-    return sha256_data;
+  sha256gen(base64) {
+    let preformatter = base64 + "/pg/v1/pay" + this.phonepeKey;
+    let sha256Data = sha256(preformatter);
+    sha256Data = sha256Data + "###" + 1;
+    return sha256Data;
   }
 
   /**
@@ -57,27 +57,23 @@ class PhonePe {
    */
 
   async generate(data) {
-    if (!this.tnxId) {
-      await this.createTxn();
-    }
     if (!data) {
       throw Error("Data Cannot be empty");
     }
     if (!data.amount) {
-      return Error("Amount is required in payload");
+      throw Error("Amount is required in payload");
     }
-
     let PAYLOAD = {
-      merchantId: this.merchant_id,
-      merchantUserId: this.merchant_user_id,
+      merchantId: this.merchantId,
+      merchantUserId: this.merchantUserId,
+      callbackUrl: this.phonepeCallbackUrl,
       amount: data.amount,
-      merchantTransactionId: this.tnxId,
-      callbackUrl: this.phonepe_callback_url,
-      redirectUrl: data.redirect_url,
-      redirectMode: "POST",
       mobileNumber: data.mobileNumber,
+      merchantTransactionId: data.transactionId ? data.transactionId : await this.createTxn(),
+      redirectUrl: data.redirectUrl,
+      redirectMode: data.redirectMode,
       paymentInstrument: {
-        type: "PAY_PAGE",
+        type: data.paymentInstrumentType,
       },
     };
     let base64Data = this.base64gen(PAYLOAD);

@@ -40,6 +40,10 @@ const initilizePhonePe = new PhonePe(
 ```javascript
 let generate_data = {
   amount: 100,
+  returnUrl: "https://demo.com/payments-status",
+  mobileNumber: "+91234567890",
+  redirectMode: "GET",
+  paymentInstrumentType: "PAY_PAGE"
 };
 
 initilizePhonePe.generate(generate_data).then((data) => {
