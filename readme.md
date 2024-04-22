@@ -47,8 +47,16 @@ let generate_data = {
 };
 
 initilizePhonePe.generate(generate_data).then((data) => {
-  console.log(data);
+  //payment url will in `data`
 });
+
+OR
+
+try{
+  let payment_url =  await initilizePhonePe.generate(generate_data);
+} catch (error){
+  console.log(error);
+}
 ```
 
 ### Parameters

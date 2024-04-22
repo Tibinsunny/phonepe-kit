@@ -57,54 +57,50 @@ class PhonePe {
    */
 
   async generate(data) {
-    if (!data) {
-      throw Error("Data Cannot be empty");
-    }
-    if (!data.amount) {
-      throw Error("Amount is required in payload");
-    }
-    let PAYLOAD = {
-      merchantId: this.merchantId,
-      merchantUserId: this.merchantUserId,
-      callbackUrl: this.phonepeCallbackUrl,
-      amount: data.amount,
-      mobileNumber: data.mobileNumber,
-      merchantTransactionId: data.transactionId ? data.transactionId : await this.createTxn(),
-      redirectUrl: data.redirectUrl,
-      redirectMode: data.redirectMode,
-      paymentInstrument: {
-        type: data.paymentInstrumentType,
-      },
-    };
-    let base64Data = this.base64gen(PAYLOAD);
-    let sha256Data = this.sha256gen(base64Data);
-    let getURI = await this.sendRequest(sha256Data, base64Data);
-    return getURI;
-  }
-  async sendRequest(X_VERIFY, BODY) {
-    const options = {
-      method: "POST",
-      url: "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay",
-      headers: {
-        "Content-Type": "application/json",
-        "X-VERIFY": X_VERIFY,
-      },
-      data: {
-        request: BODY,
-      },
-    };
-    try {
-      let { data } = await axios.request(options, {
-        data: {
-          request: BODY,
+    return new Promise(async (resolve, reject) => {
+      if (!data) {
+        reject("Data Cannot be empty");
+      }
+      if (!data.amount) {
+        reject("Amount is required in payload");
+      }
+      let payload = {
+        merchantId: this.merchantId,
+        merchantUserId: this.merchantUserId,
+        callbackUrl: this.phonepeCallbackUrl,
+        amount: data.amount,
+        mobileNumber: data.mobileNumber,
+        merchantTransactionId: data.transactionId ? data.transactionId : await this.createTxn(),
+        redirectUrl: data.redirectUrl,
+        redirectMode: data.redirectMode,
+        paymentInstrument: {
+          type: data.paymentInstrumentType,
         },
-      });
-      return data.data;
-    } catch (error) {
-      console.trace(
-        `Request Failed with status ${error.response.data.code}. Refer https://developer.phonepe.com/v1/reference/pay-api`
-      );
-    }
+      };
+      let requestData = this.base64gen(payload);
+      let signature = this.sha256gen(requestData);
+      let getURI = await this.sendRequest(signature, requestData);
+      resolve(getURI);
+    });
+  }
+  async sendRequest(signature, requestData) {
+    return new Promise(async (resolve, reject) => {
+      const options = {
+        method: "POST",
+        url: "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay",
+        headers: {
+          "Content-Type": "application/json",
+          "X-VERIFY": signature,
+        }
+      };
+      try {
+        let { data } = await axios.request(options, { data: { request: requestData } });
+        resolve(data.data);
+      } catch (error) {
+        console.trace(`Request Failed with status ${error?.response?.data?.code}. Refer https://developer.phonepe.com/v1/reference/pay-api`);
+        reject(`Transaction failed - ${error?.response?.data?.code}`)
+      }
+    });
   }
 }
 
