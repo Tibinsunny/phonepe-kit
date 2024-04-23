@@ -41,24 +41,24 @@ const initilizePhonePe = new PhonePe(
 ```javascript
 let transactionData = {
   amount: 100,
-  transactionId: "ABCDEFG12345"
+  transactionId: "ABCDEFG12345",
   callbackUrl: "https://example.com/callback-url",
   redirectUrl: "https://example.com/return-url",
   redirectMode: "GET",
   mobileNumber: "+91234567890",
-  paymentInstrumentType: "PAY_PAGE"
+  paymentInstrumentType: "PAY_PAGE",
 };
 
 initilizePhonePe.generatePaymentUrl(transactionData).then((data) => {
   //payment url will be in `data`
 });
 
-OR
+OR;
 
-try{
-  let data =  await initilizePhonePe.generatePaymentUrl(transactionData);
+try {
+  let data = await initilizePhonePe.generatePaymentUrl(transactionData);
   //payment url will be in `data`
-} catch (error){
+} catch (error) {
   console.log(error);
 }
 ```
@@ -93,7 +93,7 @@ let transactionData = {
   redirectUrl: "https://example.com/return-url",
   redirectMode: "REDIRECT",
   mobileNumber: "+91234567890",
-  paymentInstrumentType: "PAY_PAGE"
+  paymentInstrumentType: "PAY_PAGE",
 };
 
 initilizePhonePe.generatePaymentUrl(transactionData).then((data) => {
