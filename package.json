@@ -1,6 +1,6 @@
 {
   "name": "phonepe-kit",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "SDK for Phonepe web checkout",
   "main": "index.js",
   "scripts": {
