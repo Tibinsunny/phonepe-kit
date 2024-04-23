@@ -25,13 +25,13 @@ class PhonePe {
    *
    * @async
    * @function
-   * @param {string} tnxId - Optional. An existing transaction ID to be used. If not provided, a new transaction ID will be generated.
+   * @param {string} transactionId - Optional. An existing transaction ID to be used. If not provided, a new transaction ID will be generated.
    * @returns {Promise<string>} The generated or existing transaction ID.
    */
 
   async generateTransactionId() {
-    this.tnxId = await key_gen();
-    return this.tnxId;
+    this.transactionId = await key_gen();
+    return this.transactionId;
   }
 
   generateBase64(payload) {
@@ -56,11 +56,10 @@ class PhonePe {
       };
       try {
         let { data } = await axios.request(options);
-        resolve(data.data);
+        resolve(data);
       } catch (error) {
-        console.log(error.response)
         console.trace(`Request Failed with status ${error?.response?.data?.code}. Refer https://developer.phonepe.com/v1/reference`);
-        reject(`${error?.response?.data?.code} - ${error?.response?.data?.message}`)
+        reject(`${error?.response?.data?.code} - ${error?.response?.data?.message}`);
       }
     });
   }
